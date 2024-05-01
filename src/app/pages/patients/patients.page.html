@@ -1,0 +1,53 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Patients</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button [routerLink]="['add-patient']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div id="container">
+    <ion-searchbar placeholder="Search patients" [formControl]="searchControl"></ion-searchbar>
+    <ion-card *ngFor="let patient of filteredPatients$ | async ">
+      <ion-card-header>
+
+          <ion-row style="margin-top: 15px; align-items: center">
+            <ion-avatar>
+              <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+            </ion-avatar>
+            <ion-card-title style="padding-left: 20px">{{patient.firstName +" " + patient.lastName}}</ion-card-title>
+          </ion-row>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-chip>
+          Date of Birth: {{ patient.dateOfBirth | date:'dd.MM.yyyy' }}
+        </ion-chip><br>
+        <ion-row>
+          <ion-chip color="tertiary">Room Nr. {{patient.roomNo}}</ion-chip>
+          <ion-chip color="secondary">{{ patient.gender}}</ion-chip>
+          <ion-chip color="dark">Id: {{patient.patientId}}</ion-chip>
+        </ion-row>
+      </ion-card-content>
+      <ion-row class="ion-float-right">
+        <ion-button fill="clear">
+          <ion-icon size="large" name="information-circle-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear">
+          <ion-icon size="large" name="create-outline" style="color: #81C995"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="deletePatient(patient.patientId)">
+          <ion-icon size="large" name="trash-outline" style="color: #AF6057"></ion-icon>
+        </ion-button>
+      </ion-row>
+    </ion-card>
+  </div>
+</ion-content>

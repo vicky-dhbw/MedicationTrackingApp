@@ -1,0 +1,46 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Add new patient</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+  <ion-list class="wrapping-list">
+    <ion-item>
+      <ion-input formControlName="firstName" label="Patient's first name" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="lastName" label="Patients's last name" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-select formControlName="gender" label="Gender" label-placement="floating" fill="outline" interface="popover">
+        <ion-select-option value="female">Female</ion-select-option>
+        <ion-select-option value="male">Male</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="roomNo" label="Room No" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-datetime formControlName="dateOfBirth">>
+        <span slot="title">Date of Birth</span>
+      </ion-datetime>
+    </ion-item>
+    <ion-row class="ion-justify-content-center" style="display: flex; margin-top: 15px">
+      <ion-button type="submit" shape="round" expand="block" fill="outline" size="default">Submit</ion-button>
+    </ion-row>
+  </ion-list>
+  </form>
+</ion-content>
+
+<ion-toast
+  [isOpen]="isToastOpen"
+  message=""
+  [duration]="5000"
+  (didDismiss)="setOpen(false)"
+></ion-toast>
