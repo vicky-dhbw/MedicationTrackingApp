@@ -5,6 +5,9 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Add new patient</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" routerLink="/patients">Cancel</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -38,9 +41,3 @@
   </form>
 </ion-content>
 
-<ion-toast
-  [isOpen]="isToastOpen"
-  message=""
-  [duration]="5000"
-  (didDismiss)="setOpen(false)"
-></ion-toast>

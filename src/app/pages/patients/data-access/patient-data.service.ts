@@ -16,11 +16,19 @@ export class PatientDataService {
     return this._http.get<Array<PatientDtoWithId>>(this._baseUrl + '/AllPatients')
   }
 
-  public postPatient(patient: PatientDtoRequest): Observable<PatientDtoRequest>{
+  public postPatient(patient: PatientDtoRequest): Observable<PatientDtoWithId>{
     return this._http.post<PatientDtoWithId>(`${this._baseUrl}`, patient);
   }
 
   public deletePatient(id: number): Observable<any> {
     return this._http.delete(`${this._baseUrl}/${id}`);
+  }
+
+  public editPatient(patient: PatientDtoWithId): Observable<PatientDtoRequest> {
+    return this._http.put<PatientDtoWithId>(`${this._baseUrl}`+'/UpdatePatientInfo', patient);
+  }
+
+  public getPatientById(id: number): Observable<PatientDtoWithId> {
+    return this._http.get<PatientDtoWithId>(`${this._baseUrl}/${id}`);
   }
 }

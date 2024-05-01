@@ -41,7 +41,7 @@
         <ion-button fill="clear">
           <ion-icon size="large" name="information-circle-outline"></ion-icon>
         </ion-button>
-        <ion-button fill="clear">
+        <ion-button [routerLink]="['edit-patient', patient.patientId]" fill="clear">
           <ion-icon size="large" name="create-outline" style="color: #81C995"></ion-icon>
         </ion-button>
         <ion-button fill="clear" (click)="deletePatient(patient.patientId)">

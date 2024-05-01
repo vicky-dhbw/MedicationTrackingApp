@@ -25,8 +25,6 @@ export class AddPatientPage implements OnInit {
     });
   }
 
-  isToastOpen = false;
-  snackbarMessage = '';
 
   ngOnInit() {
   }
@@ -34,10 +32,10 @@ export class AddPatientPage implements OnInit {
   async onSubmit() {
     // @ts-ignore
     if (this.patientForm.valid) {
-      this.patientDataService.postPatient(this.patientForm.value).subscribe({
+      this.patientDataService.editPatient(this.patientForm.value).subscribe({
         next: async (response) => {
-          console.log('Patient created:', response);
-          await this.presentToast('Patient successfully created', 'success');
+          console.log('Patient edited:', response);
+          await this.presentToast('Patient info successfully updated', 'success');
           this.patientForm.reset();
           await this.router.navigate(['patients'])
 
@@ -52,10 +50,6 @@ export class AddPatientPage implements OnInit {
       console.error('Form is not valid');
       await this.presentToast('There was an error!', 'danger');
     }
-  }
-
-  setOpen(isOpen: boolean) {
-    this.isToastOpen = isOpen;
   }
 
   async presentToast(message: string, color: string = 'success') {

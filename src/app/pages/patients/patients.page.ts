@@ -4,13 +4,14 @@ import {PatientDtoWithId} from "./models/PatientDtoWithId";
 import {PatientDataService} from "./data-access/patient-data.service";
 import {FormControl} from "@angular/forms";
 import {ToastController} from "@ionic/angular";
+import {ViewWillEnter} from '@ionic/angular';
 
 @Component({
   selector: 'app-patients',
   templateUrl: './patients.page.html',
   styleUrls: ['./patients.page.scss'],
 })
-export class PatientsPage implements OnInit {
+export class PatientsPage implements OnInit, ViewWillEnter {
 
   searchControl = new FormControl(''); // initializing with no value
   patients$: Observable<Array<PatientDtoWithId>> = new Observable<Array<PatientDtoWithId>>();
@@ -68,5 +69,9 @@ export class PatientsPage implements OnInit {
       position: 'bottom'
     });
     await toast.present();
+  }
+
+  ionViewWillEnter() {
+    this.loadPatients();  // Refresh data every time the view enters
   }
 }
