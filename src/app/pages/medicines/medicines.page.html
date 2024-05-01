@@ -8,27 +8,44 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-button size="large" id="add-button" fill="clear">
-    <ion-icon style="font-size: 50px;" slot="icon-only" name="add-circle-outline"></ion-icon>
-  </ion-button>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button [routerLink]="['add-medicine']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
   <div id="container">
-    <ion-card>
+    <ion-searchbar placeholder="Search patients" [formControl]="searchControl"></ion-searchbar>
+    <ion-card *ngFor="let medicine of filteredMedicinesWithEffects$ | async ">
       <ion-card-header>
-        <ion-card-title>Card Title</ion-card-title>
-        <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+        <ion-card-title>{{ medicine.brandName }}</ion-card-title>
+        <ion-card-subtitle style="font-size: medium">{{ medicine.genericName }}</ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content>
-        Here's a small text description for the card content. Nothing more, nothing less.
+        <ion-row>
+          <ion-chip color="tertiary">
+            <ion-label>
+              Color: {{medicine.color}}
+            </ion-label>
+            <ion-icon name="ellipse" [style.color]="medicine.color"></ion-icon>
+          </ion-chip>
+          <ion-chip color="secondary">Form: {{ medicine.form}}</ion-chip>
+          <ion-chip color="dark">Administration Method: {{medicine.administrationMethod}}</ion-chip>
+        </ion-row>
       </ion-card-content>
-      <ion-button fill="clear">
-        <ion-icon size="large" name="information-circle-outline"></ion-icon>
-      </ion-button>
+      <ion-row class="ion-float-right">
+        <ion-button fill="clear">
+          <ion-icon size="large" name="warning-outline" color="warning"></ion-icon>
+        </ion-button>
 
-      <ion-button fill="clear">
-        <ion-icon size="large" name="create-outline"></ion-icon>
-      </ion-button>
+        <ion-button fill="clear">
+          <ion-icon size="large" name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" (click)="deleteMedicine(medicine.brandName, medicine.genericName)">
+          <ion-icon size="large" name="trash-outline" style="color: #AF6057"></ion-icon>
+        </ion-button>
+      </ion-row>
     </ion-card>
   </div>
 </ion-content>

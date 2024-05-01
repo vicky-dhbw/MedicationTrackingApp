@@ -15,7 +15,11 @@ export class AddPatientPage implements OnInit {
   component = PatientsPage;
 
   patientForm: FormGroup;
-  constructor(public patientDataService: PatientDataService, private router: Router, private toastController: ToastController) {
+  constructor(
+    public patientDataService: PatientDataService,
+    private router: Router,
+    private toastController: ToastController)
+  {
     this.patientForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -32,7 +36,7 @@ export class AddPatientPage implements OnInit {
   async onSubmit() {
     // @ts-ignore
     if (this.patientForm.valid) {
-      this.patientDataService.editPatient(this.patientForm.value).subscribe({
+      this.patientDataService.postPatient(this.patientForm.value).subscribe({
         next: async (response) => {
           console.log('Patient edited:', response);
           await this.presentToast('Patient info successfully updated', 'success');

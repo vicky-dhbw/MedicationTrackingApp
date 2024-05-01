@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Add new medicine</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" routerLink="/medicines">Cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="medicineForm" (ngSubmit)="onSubmit()">
+    <ion-list class="wrapping-list">
+      <ion-item>
+        <ion-input formControlName="brandName" label="Brand Name" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="genericName" label="Generic Name" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-select formControlName="color" label="Color" label-placement="floating" fill="outline" interface="popover">
+          <ion-select-option value="white">White</ion-select-option>
+          <ion-select-option value="Dodgerblue">Blue</ion-select-option>
+          <ion-select-option value="Limegreen">Green</ion-select-option>
+          <ion-select-option value="Lightpink">Pink</ion-select-option>
+          <ion-select-option value="Yellow">Yellow</ion-select-option>
+          <ion-select-option value="Orange">Orange</ion-select-option>
+          <ion-select-option value="Red">Red</ion-select-option>
+          <ion-select-option value="Sienna">Brown</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select formControlName="administrationMethod" label="Administration Method" label-placement="floating" fill="outline" interface="popover">
+          <ion-select-option value="Oral">Oral</ion-select-option>
+          <ion-select-option value="Sublingual">Sublingual</ion-select-option>
+          <ion-select-option value="Topical">Topical</ion-select-option>
+          <ion-select-option value="Trans-dermal">Trans-dermal</ion-select-option>
+          <ion-select-option value="Intravenous">Intravenous</ion-select-option>
+          <ion-select-option value="Intramuscular">Intramuscular</ion-select-option>
+          <ion-select-option value="Subcutaneous">Subcutaneous</ion-select-option>
+          <ion-select-option value="Inhalation">Inhalation</ion-select-option>
+          <ion-select-option value="Nasal">Nasal</ion-select-option>
+          <ion-select-option value="Ophthalmic">Ophthalmic</ion-select-option>
+          <ion-select-option value="Otic">Otic</ion-select-option>
+          <ion-select-option value="Buccal">Buccal</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select formControlName="form" label="Form" label-placement="floating" fill="outline" interface="popover">
+          <ion-select-option value="Tablet">Tablet</ion-select-option>
+          <ion-select-option value="Capsule">Capsule</ion-select-option>
+          <ion-select-option value="Liquid">Liquid</ion-select-option>
+          <ion-select-option value="Injection">Injection</ion-select-option>
+          <ion-select-option value="Cream">Cream</ion-select-option>
+          <ion-select-option value="Ointment">Ointment</ion-select-option>
+          <ion-select-option value="Gel">Gel</ion-select-option>
+          <ion-select-option value="Patch">Patch</ion-select-option>
+          <ion-select-option value="Inhaler">Inhaler</ion-select-option>
+          <ion-select-option value="Suppository">Suppository</ion-select-option>
+          <ion-select-option value="Drop">Drop</ion-select-option>
+          <ion-select-option value="Powder">Powder</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-row class="ion-justify-content-center" style="display: flex; margin-top: 15px">
+        <ion-button type="submit" shape="round" expand="block" fill="outline" size="default">Submit</ion-button>
+      </ion-row>
+    </ion-list>
+  </form>
+</ion-content>
