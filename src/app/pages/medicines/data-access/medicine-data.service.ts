@@ -53,4 +53,8 @@ export class MedicineDataService {
   public updateMedicine(medicine: MedicineDtoWithId): Observable<MedicineDto>{
     return this._httpClient.put<MedicineDto>(`${this._baseUrl}`+'/UpdateMedicine', medicine);
   }
+
+  public deleteMedEffect(effectId: number): Observable<any> {
+    return this._httpClient.delete(`${this._baseUrl}`+`/DeleteEffect/${effectId}`);
+  }
 }

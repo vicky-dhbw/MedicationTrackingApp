@@ -51,7 +51,9 @@ export class AddDrugEffectPage implements OnInit {
           console.log('Drug effect created', response);
           await this.presentToast('Drug effect created successfully', 'success');
           this.drugEffectForm.reset();
-          await this.router.navigate(['medicine-effects'])
+          await this.router.navigate(['/medicines/medicine-effects'], {
+            queryParams: {genericName: this.genericName, brandName: this.brandName}
+          })
 
         },
         error: async (error) => {
