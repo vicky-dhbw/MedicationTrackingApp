@@ -1,13 +1,59 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>medicine-effects</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Drug Effects</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" routerLink="/medicines">Back</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">medicine-effects</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ng-container *ngIf="medicineWithDrugEffects | async as medicine">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button [routerLink]="['add-drug-effect']" [queryParams]="{ genericName: medicine.genericName, brandName: medicine.brandName }">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <div id="container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ medicine.brandName }}</ion-card-title>
+        <ion-card-subtitle style="font-size: medium">{{ medicine.genericName }}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-row>
+          <ion-chip color="tertiary">
+            <ion-label>
+              Color: {{medicine.color}}
+            </ion-label>
+            <ion-icon name="ellipse" [style.color]="medicine.color"></ion-icon>
+          </ion-chip>
+          <ion-chip color="secondary">Form: {{ medicine.form}}</ion-chip>
+          <ion-chip color="dark">Administration Method: {{medicine.administrationMethod}}</ion-chip>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngFor="let effect of medicine.medicationEffects" style="color:#EEE8B3">
+      <ion-card-header>
+        <ion-row class="ion-align-items-center ion-justify-content-between">
+          <ion-card-title>{{ effect.gender }}</ion-card-title>
+          <ion-button (click)="deleteMedEffect(effect.effectId)" size="default" fill="clear" class="ion-no-margin ion-no-padding" style="--padding-end: 0; --padding-start: 0;" color="danger">
+            <ion-icon size="default" name="trash-bin-outline"></ion-icon>
+          </ion-button>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content>
+        {{effect.description}}
+      </ion-card-content>
+    </ion-card>
+
+
+  </div>
+  </ng-container>
 </ion-content>
+

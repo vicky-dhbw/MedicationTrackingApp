@@ -2,11 +2,16 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AddMedicinePage } from './add-medicine.page';
+import {MedicineEffectsPage} from "../medicine-effects/medicine-effects.page";
 
 const routes: Routes = [
   {
     path: '',
     component: AddMedicinePage
+  },
+  {
+    path: 'medicine-effects',
+    component: MedicineEffectsPage
   }
 ];
 

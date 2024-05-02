@@ -4,6 +4,7 @@ import {BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, st
 import {MedicineWithEffects} from "./models/MedicineWithEffects";
 import {FormControl} from "@angular/forms";
 import {ToastController, ViewWillEnter} from "@ionic/angular";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-medicines',
@@ -18,7 +19,7 @@ export class MedicinesPage implements OnInit, ViewWillEnter {
   searchControl = new FormControl('');
 
 
-  constructor(public medicineDataService: MedicineDataService,  private toastController: ToastController) { }
+  constructor(public medicineDataService: MedicineDataService,  private toastController: ToastController, private router:Router) { }
 
   async ngOnInit() {
     this.loadMedicines();

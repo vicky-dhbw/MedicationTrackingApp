@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Add Drug Effect</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" routerLink="/medicines">Cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-item>
+      <h2>{{ brandName }}</h2>
+    </ion-item>
+  <form [formGroup]="drugEffectForm" (ngSubmit)="onSubmit()">
+    <ion-list class="wrapping-list">
+      <ion-item>
+        <ion-select formControlName="gender" label="Gender" label-placement="floating" fill="outline" interface="popover">
+          <ion-select-option value="Male">Male</ion-select-option>
+          <ion-select-option value="Female">Female</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="description" label="Description" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+      </ion-item>
+      <ion-row class="ion-justify-content-center" style="display: flex; margin-top: 15px">
+        <ion-button type="submit" shape="round" expand="block" fill="outline" size="default">Submit</ion-button>
+      </ion-row>
+    </ion-list>
+  </form>
+</ion-content>

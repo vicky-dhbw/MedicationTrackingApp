@@ -4,6 +4,9 @@ import {Observable} from "rxjs";
 import {MedicineWithEffects} from "../models/MedicineWithEffects";
 import {MedicineDto} from "../models/MedicineDto";
 import {MedicineDtoWithId} from "../models/MedicineDtoWithid";
+import {MedicineDtoWithEffects} from "../models/MedicineDtoWithEffects";
+import {MedicineBaseWithEffect} from "../models/MedicineBaseWithEffect";
+import {MedEffectResponse} from "../models/MedEffectResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +29,28 @@ export class MedicineDataService {
       .set('brandName', brandName)
       .set('genericName', genericName);
     return this._httpClient.delete(`${this._baseUrl}`, {params: params});
+  }
+
+  public getMedEffects(brandName: string, genericName: string): Observable<MedicineDtoWithEffects> {
+    let params = new HttpParams()
+      .set('brandName', brandName)
+      .set('genericName', genericName);
+
+    return this._httpClient.get<MedicineDtoWithEffects>(`${this._baseUrl}` + '/AllEffectsForMed', {params: params});
+  }
+
+  public addMedEffect(medWithEffect: MedicineBaseWithEffect): Observable<MedEffectResponse> {
+    return this._httpClient.post<MedEffectResponse>(`${this._baseUrl}`+'/AddMedEffect', medWithEffect)
+  }
+
+  public getMedOnly(brandName: string, genericName: string): Observable<MedicineDtoWithId> {
+    let params = new HttpParams()
+      .set('brandName', brandName)
+      .set('genericName', genericName);
+    return this._httpClient.get<MedicineDtoWithId>(`${this._baseUrl}`,{params: params});
+  }
+
+  public updateMedicine(medicine: MedicineDtoWithId): Observable<MedicineDto>{
+    return this._httpClient.put<MedicineDto>(`${this._baseUrl}`+'/UpdateMedicine', medicine);
   }
 }
