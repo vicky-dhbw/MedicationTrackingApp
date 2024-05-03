@@ -37,7 +37,7 @@
         </ion-row>
       </ion-card-content>
       <ion-row class="ion-float-right">
-        <ion-button fill="clear">
+        <ion-button fill="clear" [routerLink]="['medication-schedule']" [queryParams]="{patientId: patient.patientId}">
           <ion-icon size="large" name="information-circle-outline"></ion-icon>
         </ion-button>
         <ion-button [routerLink]="['edit-patient', patient.patientId]" fill="clear">
