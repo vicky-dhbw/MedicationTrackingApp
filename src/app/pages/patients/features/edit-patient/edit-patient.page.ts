@@ -4,6 +4,7 @@ import {PatientDataService} from "../../data-access/patient-data.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastController} from "@ionic/angular";
 import {PatientDtoRequest} from "../../models/PatientDtoRequest";
+import {SnackbarService} from "../../../../GlobalServices/snackbar.service";
 
 @Component({
   selector: 'app-edit-patient',
@@ -17,8 +18,8 @@ export class EditPatientPage implements OnInit {
 
   constructor(public patientDataService: PatientDataService,
               private router: Router,
-              private toastController: ToastController,
               private route: ActivatedRoute,
+              private snackbarService: SnackbarService,
               ) {
     this.patientForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
@@ -60,29 +61,21 @@ export class EditPatientPage implements OnInit {
       this.patientDataService.editPatient(formData).subscribe({
         next: async (response) => {
           console.log('Patient updated:', response);
-          await this.presentToast('Patient info successfully updated', 'success');
+          await this.snackbarService.presentToast('Patient info successfully updated', 'success');
+         // await this.presentToast('Patient info successfully updated', 'success');
           this.patientForm.reset();
           await this.router.navigate(['patients'])
 
         },
         error: async (error) => {
           console.error('Error editing patient info:', error);
-          await this.presentToast(error, 'danger');
+          await this.snackbarService.presentToast(error, 'danger');
         }
       });
     } else {
       console.error('Form is not valid');
-      await this.presentToast('There was an error!', 'danger');
+      await this.snackbarService.presentToast('There was an error!', 'danger');
     }
   }
 
-  async presentToast(message: string, color: string = 'success') {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 5000,
-      color: color,
-      position: 'bottom'
-    });
-    await toast.present();
-  }
 }

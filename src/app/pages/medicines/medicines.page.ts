@@ -3,8 +3,9 @@ import {MedicineDataService} from "./data-access/medicine-data.service";
 import {BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, startWith, switchMap} from "rxjs";
 import {MedicineWithEffects} from "./models/MedicineWithEffects";
 import {FormControl} from "@angular/forms";
-import {ToastController, ViewWillEnter} from "@ionic/angular";
+import {ViewWillEnter} from "@ionic/angular";
 import {Router} from "@angular/router";
+import {SnackbarService} from "../../GlobalServices/snackbar.service";
 
 @Component({
   selector: 'app-medicines',
@@ -19,7 +20,9 @@ export class MedicinesPage implements OnInit, ViewWillEnter {
   searchControl = new FormControl('');
 
 
-  constructor(public medicineDataService: MedicineDataService,  private toastController: ToastController, private router:Router) { }
+  constructor(public medicineDataService: MedicineDataService,
+              private snackbarService: SnackbarService,
+              private router:Router) { }
 
   async ngOnInit() {
     this.loadMedicines();
@@ -54,24 +57,14 @@ export class MedicinesPage implements OnInit, ViewWillEnter {
   deleteMedicine(brandName: string, genericName: string){
     this.medicineDataService.deleteMedicine(brandName, genericName).subscribe({
       next: async () => {
-        await this.presentToast('Medicine successfully deleted', 'success');
+        await this.snackbarService.presentToast('Medicine successfully deleted', 'success');
         this.loadMedicines();
       },
       error: async (error) => {
         console.error('Error deleting medicine:', error);
-        await this.presentToast('Error deleting patient', 'danger');
+        await this.snackbarService.presentToast('Error deleting patient', 'danger');
       }
     });
-  }
-
-  async presentToast(message: string, color: string = 'success') {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 5000,
-      color: color,
-      position: 'bottom'
-    });
-    await toast.present();
   }
 
   ionViewWillEnter() {

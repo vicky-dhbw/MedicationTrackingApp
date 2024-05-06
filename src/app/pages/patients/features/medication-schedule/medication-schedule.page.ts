@@ -3,7 +3,10 @@ import {ActivatedRoute} from "@angular/router";
 import {MedicationScheduleService} from "../../data-access/medication-schedule.service";
 import {PatientScheduledMeds} from "../../models/PatientScheduledMeds";
 import {Observable} from "rxjs";
-import {ViewWillEnter } from '@ionic/angular';
+import {AlertController, AlertInput, ViewWillEnter} from '@ionic/angular';
+import {MedicineSchedule} from "../../models/MedicineSchedule";
+import {MedAdminConfirmDto} from "../../models/MedAdminConfirmDto";
+import {SnackbarService} from "../../../../GlobalServices/snackbar.service";
 
 @Component({
   selector: 'app-medication-schedule',
@@ -14,7 +17,23 @@ export class MedicationSchedulePage implements OnInit, ViewWillEnter {
 
   patientId: number =0;
   medSchedules$: Observable<PatientScheduledMeds> = new Observable<PatientScheduledMeds>();
-  constructor(private route: ActivatedRoute, private medicationScheduleService: MedicationScheduleService) { }
+  constructor(private route: ActivatedRoute,
+              private medicationScheduleService: MedicationScheduleService,
+              private alertController: AlertController,
+              private snackbarService: SnackbarService,) { }
+
+  public alertButtons = [{
+    text: 'Confirm',
+    handler: (description : { [x: string]: any }) => {
+      console.log(description[0]);
+      return description;
+    }
+  }];
+
+  private alertInputs: AlertInput[] = [{
+    type: 'textarea',
+    placeholder: 'A little about the medication administered',
+  }];
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -35,6 +54,59 @@ export class MedicationSchedulePage implements OnInit, ViewWillEnter {
         this.medSchedules$ = this.medicationScheduleService.getAllMedSchedulesForPatient(this.patientId);
       }
     });
+  }
+
+  async presentSkippedAlert(medicationSchedule: MedicineSchedule)
+  {
+    const alert = await this.alertController.create({
+      header: medicationSchedule.medicineDto.brandName,
+      subHeader: medicationSchedule.medicineDto.genericName,
+      message: 'Medication scheduled for ' +`${medicationSchedule.medicineScheduleBase.timeCategory}`+' was skipped.',
+      buttons: ['Close'],
+    });
+
+    await alert.present();
+  }
+
+  async presentPendingAlert(medicationSchedule: MedicineSchedule)
+  {
+    const alert = await this.alertController.create({
+      header: medicationSchedule.medicineDto.brandName,
+      subHeader: medicationSchedule.medicineDto.genericName,
+      inputs: this.alertInputs,
+      buttons: this.alertButtons,
+      message: 'Scheduled ' + `${medicationSchedule.medicineScheduleBase.timeCategory}`,
+    })
+
+    await alert.present();
+
+    const description = await alert.onWillDismiss()
+    const medLogConfirm: MedAdminConfirmDto = {
+      scheduleId : medicationSchedule.medicineScheduleBase.scheduleId,
+      medAdminStatus : 1,
+      medAdminNote : description.data[0]
+    }
+    this.medicationScheduleService.confirmMedAdministered(medLogConfirm).subscribe({
+      next: async (response) => {
+        await this.snackbarService.presentToast('Successfully confirmed', 'success');
+        this.medSchedules$ = this.medicationScheduleService.getAllMedSchedulesForPatient(this.patientId);
+      },
+      error: async (error) =>{
+        await this.snackbarService.presentToast(error, 'danger');
+      }
+    })
+  }
+
+  async presentDoneAlert(medicationSchedule: MedicineSchedule)
+  {
+    const alert = await this.alertController.create({
+      header: medicationSchedule.medicineDto.brandName,
+      subHeader: medicationSchedule.medicineDto.genericName,
+      message: 'Medication scheduled for ' +`${medicationSchedule.medicineScheduleBase.timeCategory}`+' was administered. Noted: ' + `${medicationSchedule.medAdministrationLog.medAdminNote}`,
+      buttons: ['Close'],
+    });
+
+    await alert.present();
   }
 
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {MedicineDataService} from "../../data-access/medicine-data.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ToastController} from "@ionic/angular";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {MedicineDtoWithId} from "../../models/MedicineDtoWithid";
+import {SnackbarService} from "../../../../GlobalServices/snackbar.service";
 
 @Component({
   selector: 'app-edit-medicine',
@@ -22,7 +22,7 @@ export class EditMedicinePage implements OnInit {
   constructor(
     private medicineDataService: MedicineDataService,
     private router: Router,
-    private toastController: ToastController,
+    private snackbarService: SnackbarService,
     private route: ActivatedRoute,
     )
   {
@@ -69,29 +69,19 @@ export class EditMedicinePage implements OnInit {
       this.medicineDataService.updateMedicine(formPayload).subscribe({
         next: async (response) => {
           console.log('Medicine successfully updated!', response);
-          await this.presentToast('Medicine successfully updated!', 'success');
+          await this.snackbarService.presentToast('Medicine successfully updated!', 'success');
           this.medicineForm.reset();
           await this.router.navigate(['medicines'])
         },
         error: async (error) => {
           console.error(error);
-          await this.presentToast('There was an error!', 'danger');
+          await this.snackbarService.presentToast('There was an error!', 'danger');
         }
       })
     }
     else {
       console.error('Form is not valid');
-      await this.presentToast('There was an error!', 'danger');
+      await this.snackbarService.presentToast('There was an error!', 'danger');
     }
-  }
-
-  async presentToast(message: string, color: string = 'success') {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 5000,
-      color: color,
-      position: 'bottom'
-    });
-    await toast.present();
   }
 }

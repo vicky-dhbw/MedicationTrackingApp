@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MedicineDataService} from "../../data-access/medicine-data.service";
 import {ToastController} from "@ionic/angular";
+import {SnackbarService} from "../../../../GlobalServices/snackbar.service";
 
 @Component({
   selector: 'app-add-drug-effect',
@@ -20,6 +21,7 @@ export class AddDrugEffectPage implements OnInit {
     private route: ActivatedRoute,
     private medicineDataService: MedicineDataService,
     private toastController: ToastController,
+    private snackbarService: SnackbarService,
     private router: Router)
   {
     this.route.queryParams.subscribe(params => {
@@ -49,7 +51,7 @@ export class AddDrugEffectPage implements OnInit {
       this.medicineDataService.addMedEffect(formPayload).subscribe({
         next: async (response) => {
           console.log('Drug effect created', response);
-          await this.presentToast('Drug effect created successfully', 'success');
+          await this.snackbarService.presentToast('Drug effect created successfully', 'success');
           this.drugEffectForm.reset();
           await this.router.navigate(['/medicines/medicine-effects'], {
             queryParams: {genericName: this.genericName, brandName: this.brandName}
@@ -58,19 +60,9 @@ export class AddDrugEffectPage implements OnInit {
         },
         error: async (error) => {
           console.error('Error creating drug effect:', error);
-          await this.presentToast('Error creating drug effect', 'danger');
+          await this.snackbarService.presentToast('Error creating drug effect', 'danger');
         }
       })
     }
-  }
-
-  async presentToast(message: string, color: string = 'success') {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 5000,
-      color: color,
-      position: 'bottom'
-    });
-    await toast.present();
   }
 }

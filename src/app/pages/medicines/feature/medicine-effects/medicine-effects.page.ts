@@ -3,7 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {MedicineDataService} from "../../data-access/medicine-data.service";
 import {MedicineDtoWithEffects} from "../../models/MedicineDtoWithEffects";
 import {Observable} from "rxjs";
-import {ToastController} from "@ionic/angular";
+import {SnackbarService} from "../../../../GlobalServices/snackbar.service";
 
 @Component({
   selector: 'app-medicine-effects',
@@ -16,7 +16,9 @@ export class MedicineEffectsPage implements OnInit {
   public brandName: string = '';
   medicineWithDrugEffects: Observable<MedicineDtoWithEffects> = new Observable<MedicineDtoWithEffects>();
 
-  constructor(private route: ActivatedRoute, private medicineDataService: MedicineDataService,private toastController: ToastController) {
+  constructor(private route: ActivatedRoute,
+              private medicineDataService: MedicineDataService,
+              private snackbarService: SnackbarService,) {
   }
 
   ngOnInit() {
@@ -33,24 +35,14 @@ export class MedicineEffectsPage implements OnInit {
     this.medicineDataService.deleteMedEffect(effectId).subscribe({
       next: async () => {
         console.log("Medicine Effect deleted!")
-        await this.presentToast('Medicine Effect successfully deleted', 'success');
+        await this.snackbarService.presentToast('Medicine Effect successfully deleted', 'success');
         this.loadMedicineEffects(this.brandName, this.genericName);
       },
       error: async (error) => {
         console.error('Error deleting medicine effect:', error);
-        await this.presentToast('Error deleting medicine effect:', error);
+        await this.snackbarService.presentToast('Error deleting medicine effect:', error);
       }
     })
-  }
-
-  async presentToast(message: string, color: string = 'success') {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 5000,
-      color: color,
-      position: 'bottom'
-    });
-    await toast.present();
   }
 
   loadMedicineEffects(brandName: string, genericName: string) {

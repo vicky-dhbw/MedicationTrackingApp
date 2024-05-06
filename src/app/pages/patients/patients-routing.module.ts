@@ -19,6 +19,10 @@ const routes: Routes = [
   {
     path: 'medication-schedule',
     loadChildren: () => import('./features/medication-schedule/medication-schedule.module').then( m => m.MedicationSchedulePageModule)
+  },
+  {
+    path: 'med-admin-log',
+    loadChildren: () => import('./features/med-admin-log/med-admin-log.module').then( m => m.MedAdminLogPageModule)
   }
 ];
 

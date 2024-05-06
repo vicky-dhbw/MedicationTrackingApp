@@ -13,11 +13,27 @@
 <ion-content [fullscreen]="true">
   <ng-container *ngIf="medSchedules$ | async as medSchedules">
     <ion-item class="ion-padding" style="--ion-padding:10px">
-      <h4 class="ion-padding-horizontal" style="--ion-padding: 4px">Meds for {{medSchedules.patient.firstName}} {{medSchedules.patient.lastName}}</h4>
+      <h4 class="ion-padding-horizontal" style="--ion-padding: 4px">Today's Med Schedule for {{medSchedules.patient.firstName}} {{medSchedules.patient.lastName}}</h4>
     </ion-item>
   <ion-card *ngFor="let medSchedule of medSchedules.medicineSchedules">
     <ion-card-header>
-      <ion-card-title>{{ medSchedule.medicineDto.brandName }}</ion-card-title>
+      <ion-row class="ion-align-items-center ion-justify-content-between">
+        <ion-card-title>{{ medSchedule.medicineDto.brandName }}</ion-card-title>
+        <ng-container [ngSwitch]="medSchedule.medAdministrationLog.medAdminStatus">
+          <ion-button *ngSwitchCase="-1" size="default" fill="clear" (click)="presentSkippedAlert(medSchedule)" class="ion-no-margin ion-no-padding" style="--padding-end: 0; --padding-start: 0;" color="danger">
+            <ion-icon size="default" name="close-outline"></ion-icon>
+            <ion-label class="ion-padding" style="--ion-padding-horizontal:5px">Skipped</ion-label>
+          </ion-button>
+          <ion-button *ngSwitchCase="0" size="default" fill="clear" (click)="presentPendingAlert(medSchedule)" class="ion-no-margin ion-no-padding" style="--padding-end: 0; --padding-start: 0;" color="warning">
+            <ion-icon size="default" name="list-outline"></ion-icon>
+            <ion-label class="ion-padding" style="--ion-padding-horizontal:5px">Pending</ion-label>
+          </ion-button>
+          <ion-button *ngSwitchCase="1" size="default" (click)="presentDoneAlert(medSchedule)" fill="clear" class="ion-no-margin ion-no-padding" style="--padding-end: 0; --padding-start: 0;" color="success">
+            <ion-icon size="default" name="checkmark-outline"></ion-icon>
+            <ion-label class="ion-padding" style="--ion-padding-horizontal:5px">Done</ion-label>
+          </ion-button>
+        </ng-container>
+      </ion-row>
       <ion-card-subtitle style="font-size: medium">{{ medSchedule.medicineDto.genericName }}</ion-card-subtitle>
     </ion-card-header>
 
@@ -43,6 +59,13 @@
             Time: {{medSchedule.medicineScheduleBase.timeCategory}}
           </ion-label>
         </ion-chip>
+
+      <ion-chip color="warning">
+        <ion-icon name="calendar-outline"></ion-icon>
+        <ion-label>
+          Duration: {{medSchedule.medicineScheduleBase.start | date:'dd.MM.yyyy'}} - {{medSchedule.medicineScheduleBase.end | date:'dd.MM.yyyy'}}
+        </ion-label>
+      </ion-chip>
     </ion-card-content>
   </ion-card>
 
