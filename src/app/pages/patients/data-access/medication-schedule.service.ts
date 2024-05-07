@@ -8,12 +8,17 @@ import {PatientMedSchedulesDto} from "../models/PatientMedSchedulesDto";
 import {MedicationScheduleDto} from "../../schedule-medication/models/MedicationScheduleDto";
 import {MedicineScheduleBase} from "../models/MedicineScheduleBase";
 import {MedicationSchedulePostDto} from "../../schedule-medication/models/MedicationSchedulePostDto";
+import {environment} from "../../../../environments/environment.prod";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MedicationScheduleService {
-  private _baseUrl = 'http://localhost:5215/api/MedicineScheduling';
+
+  private backendApi = environment.backendApiFromHost;
+  //private backendApi = environment.backendApiFromAndroidStudio;
+
+  private _baseUrl = `http://${this.backendApi}:5215/api/MedicineScheduling`;
 
   constructor(private _http: HttpClient) { }
 
@@ -22,7 +27,7 @@ export class MedicationScheduleService {
   }
 
   public confirmMedAdministered(MedAdminConfirmDto : MedAdminConfirmDto): Observable<MedAdminLogDto> {
-    return this._http.post<MedAdminLogDto> (`http://localhost:5215/api/MedAdministrationLog`, MedAdminConfirmDto);
+    return this._http.post<MedAdminLogDto> (`http://${this.backendApi}:5215/api/MedAdministrationLog`, MedAdminConfirmDto);
   }
 
   public getAllMedSchedulesForPatient(qRCode: string): Observable<PatientMedSchedulesDto> {

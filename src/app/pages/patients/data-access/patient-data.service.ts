@@ -3,12 +3,17 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {PatientDtoWithId} from "../models/PatientDtoWithId";
 import {PatientDtoRequest} from "../models/PatientDtoRequest";
+import {environment} from "../../../../environments/environment.prod";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientDataService {
-  private _baseUrl = 'http://localhost:5215/api/Patient';
+
+  private backendApi = environment.backendApiFromHost;
+  //private backendApi = environment.backendApiFromAndroidStudio;
+
+  private _baseUrl = `http://${this.backendApi}:5215/api/Patient`;
 
   constructor(private _http: HttpClient) { }
 

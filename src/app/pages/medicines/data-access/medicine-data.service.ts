@@ -7,13 +7,17 @@ import {MedicineDtoWithId} from "../models/MedicineDtoWithid";
 import {MedicineDtoWithEffects} from "../models/MedicineDtoWithEffects";
 import {MedicineBaseWithEffect} from "../models/MedicineBaseWithEffect";
 import {MedEffectResponse} from "../models/MedEffectResponse";
+import {environment} from "../../../../environments/environment.prod";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MedicineDataService {
 
-  private _baseUrl = 'http://localhost:5215/api/Medicine';
+  private backendApi = environment.backendApiFromHost;
+  //private backendApi = environment.backendApiFromAndroidStudio;
+
+  private _baseUrl = `http://${this.backendApi}:5215/api/Medicine`;
   constructor(private _httpClient: HttpClient) {}
 
   public getAllMedicinesWithEffects(): Observable<Array<MedicineWithEffects>> {

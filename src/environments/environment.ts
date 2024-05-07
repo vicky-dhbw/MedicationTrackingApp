@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  backendApiFromHost: 'localhost',
+  backendApiFromAndroidStudio: '10.0.2.2'
 };
 
 /*
