@@ -1,0 +1,76 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Schedule Medication</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-searchbar type="text" placeholder="Enter QR Code" [formControl]="searchControl" ></ion-searchbar>
+  <ng-container *ngIf="patientMedSchedules$ | async as medSchedules">
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start">
+      <ion-fab-button [routerLink]="['add-medication']" [queryParams]="{ patientId: medSchedules.patient.patientId }">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-card>
+      <ion-card-header>
+        <ion-row style="margin-top: 15px; align-items: center">
+          <ion-avatar>
+            <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+          </ion-avatar>
+          <ion-card-title style="padding-left: 20px">{{medSchedules.patient.firstName +" " + medSchedules.patient.lastName}}</ion-card-title>
+        </ion-row>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-row>
+          <ion-chip color="tertiary">Room Nr. {{medSchedules.patient.roomNo}}</ion-chip>
+          <ion-chip color="secondary">{{ medSchedules.patient.gender}}</ion-chip>
+          <ion-chip color="warning">Id: {{medSchedules.patient.patientId}}</ion-chip>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngFor="let medSchedule of medSchedules.medicineSchedules">
+      <ion-card-header>
+        <ion-row class="ion-align-items-center ion-justify-content-between">
+          <ion-card-title>{{ medSchedule.medicineDto.brandName }}</ion-card-title>
+        </ion-row>
+        <ion-card-subtitle style="font-size: medium">{{ medSchedule.medicineDto.genericName }}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-row>
+          <ion-chip color="primary">
+            <ion-icon name="medical-outline"></ion-icon>
+            <ion-label>Dosage: {{medSchedule.medicineScheduleBase.dosage}}</ion-label>
+          </ion-chip>
+
+          <ion-chip color="secondary">
+            <ion-icon name="time-outline"></ion-icon>
+            <ion-label>
+              Time: {{medSchedule.medicineScheduleBase.timeCategory}}
+            </ion-label>
+          </ion-chip>
+
+          <ion-chip color="warning">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <ion-label>
+              Duration: {{medSchedule.medicineScheduleBase.start | date:'dd.MM.yyyy'}} - {{medSchedule.medicineScheduleBase.end | date:'dd.MM.yyyy'}}
+            </ion-label>
+          </ion-chip>
+        </ion-row>
+      </ion-card-content>
+
+      <ion-row class="ion-float-right">
+        <ion-button fill="clear" [routerLink]="['edit-medication']" [queryParams]="{ scheduleId: medSchedule.medicineScheduleBase.scheduleId }">
+          <ion-icon size="large" name="create-outline"></ion-icon>
+        </ion-button>
+      </ion-row>
+    </ion-card>
+  </ng-container>
+</ion-content>

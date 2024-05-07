@@ -42,7 +42,7 @@ export class MedicationSchedulePage implements OnInit, ViewWillEnter {
 
     console.log(this.patientId);
 
-    this.medSchedules$ = this.medicationScheduleService.getAllMedSchedulesForPatient(this.patientId);
+    this.medSchedules$ = this.medicationScheduleService.getAllMedSchedulesForPatientForToday(this.patientId);
 
   }
 
@@ -51,7 +51,7 @@ export class MedicationSchedulePage implements OnInit, ViewWillEnter {
       this.patientId = parseInt(params['patientId'], 10);
       if (this.patientId) {
         console.log('Fetching schedules for patient ID:', this.patientId);
-        this.medSchedules$ = this.medicationScheduleService.getAllMedSchedulesForPatient(this.patientId);
+        this.medSchedules$ = this.medicationScheduleService.getAllMedSchedulesForPatientForToday(this.patientId);
       }
     });
   }
@@ -89,7 +89,7 @@ export class MedicationSchedulePage implements OnInit, ViewWillEnter {
     this.medicationScheduleService.confirmMedAdministered(medLogConfirm).subscribe({
       next: async (response) => {
         await this.snackbarService.presentToast('Successfully confirmed', 'success');
-        this.medSchedules$ = this.medicationScheduleService.getAllMedSchedulesForPatient(this.patientId);
+        this.medSchedules$ = this.medicationScheduleService.getAllMedSchedulesForPatientForToday(this.patientId);
       },
       error: async (error) =>{
         await this.snackbarService.presentToast(error, 'danger');

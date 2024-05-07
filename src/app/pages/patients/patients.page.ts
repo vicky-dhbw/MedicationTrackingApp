@@ -3,8 +3,8 @@ import {BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, st
 import {PatientDtoWithId} from "./models/PatientDtoWithId";
 import {PatientDataService} from "./data-access/patient-data.service";
 import {FormControl} from "@angular/forms";
-import {ToastController} from "@ionic/angular";
 import {ViewWillEnter} from '@ionic/angular';
+import {SnackbarService} from "../../GlobalServices/snackbar.service";
 
 @Component({
   selector: 'app-patients',
@@ -18,7 +18,7 @@ export class PatientsPage implements OnInit, ViewWillEnter {
   patients$: Observable<Array<PatientDtoWithId>> = this.patientsSubject.asObservable();
   filteredPatients$: Observable<Array<PatientDtoWithId>> = new Observable<Array<PatientDtoWithId>>();
 
-  constructor(public patientDataService: PatientDataService, private toastController: ToastController) {}
+  constructor(public patientDataService: PatientDataService, private snackbarService: SnackbarService,) {}
 
   public async ngOnInit() {
     this.loadPatients();
@@ -54,24 +54,14 @@ export class PatientsPage implements OnInit, ViewWillEnter {
   deletePatient(id: number) {
     this.patientDataService.deletePatient(id).subscribe({
       next: async () => {
-        await this.presentToast('Patient successfully deleted', 'success');
+        await this.snackbarService.presentToast('Patient successfully deleted', 'success');
         this.loadPatients(); // Reload the list after deletion
       },
       error: async (error) => {
         console.error('Error deleting patient:', error);
-        await this.presentToast('Error deleting patient', 'danger');
+        await this.snackbarService.presentToast('Error deleting patient', 'danger');
       }
     });
-  }
-
-  async presentToast(message: string, color: string = 'success') {
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 5000,
-      color: color,
-      position: 'bottom'
-    });
-    await toast.present();
   }
 
   ionViewWillEnter() {

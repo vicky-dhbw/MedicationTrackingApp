@@ -1,9 +1,6 @@
-import {MedicineScheduleBase} from "./MedicineScheduleBase";
-import {MedicineDto} from "../../medicines/models/MedicineDto";
 import {MedAdminLogDto} from "./MedAdminLogDto";
+import {MedInfoScheduleBase} from "./MedInfoScheduleBase";
 
-export interface MedicineSchedule {
-  medicineDto: MedicineDto,
-  medicineScheduleBase: MedicineScheduleBase,
+export interface MedicineSchedule extends MedInfoScheduleBase{
   medAdministrationLog: MedAdminLogDto
 }

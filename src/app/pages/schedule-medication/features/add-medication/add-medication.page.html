@@ -1,0 +1,63 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Add Medication</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" routerLink="/schedule-medication">Cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <form [formGroup]="medicationForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+        <ion-item>
+          <ion-select formControlName="brandName" label="Brand name" label-placement="floating" fill="outline" interface="popover">
+            <ion-select-option *ngFor="let medicine of (medicines$ | async)" [value]="medicine.brandName">
+              {{medicine.brandName}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-select formControlName="genericName" label="Generic name" label-placement="floating" fill="outline" interface="popover">
+            <ion-select-option *ngFor="let medicine of (medicines$ | async)" [value]="medicine.genericName">
+              {{medicine.genericName}}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-select formControlName="timeCategory" label="Time Category" label-placement="floating" fill="outline" interface="popover">
+            <ion-select-option value="Before Breakfast">Before Breakfast</ion-select-option>
+            <ion-select-option value="After Breakfast">After Breakfast</ion-select-option>
+            <ion-select-option value="Before Lunch">Before Lunch</ion-select-option>
+            <ion-select-option value="After Lunch">After Lunch</ion-select-option>
+            <ion-select-option value="Before Dinner">Before Dinner</ion-select-option>
+            <ion-select-option value="After Dinner">After Dinner</ion-select-option>
+            <ion-select-option value="Before Bed">Before Bed</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+      <ion-item>
+        <ion-input formControlName="dosage" label="Dosage" label-placement="floating" fill="outline" placeholder="Enter text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-datetime formControlName="start" presentation="date" [preferWheel]="true">
+          <span slot="title">Start Date</span>
+        </ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-datetime formControlName="end" presentation="date" [preferWheel]="true">
+          <span slot="title">End Date</span>
+        </ion-datetime>
+      </ion-item>
+      <ion-row class="ion-justify-content-center" style="display: flex; margin-top: 15px">
+        <ion-button type="submit" shape="round" expand="block" fill="outline" size="default">Submit</ion-button>
+      </ion-row>
+    </ion-list>
+  </form>
+</ion-content>
