@@ -15,8 +15,8 @@ import {environment} from "../../../../environments/environment.prod";
 })
 export class MedicationScheduleService {
 
-  private backendApi = environment.backendApiFromHost;
-  //private backendApi = environment.backendApiFromAndroidStudio;
+  //private backendApi = environment.backendApiFromHost;
+  private backendApi = '10.0.2.2';
 
   private _baseUrl = `http://${this.backendApi}:5215/api/MedicineScheduling`;
 
