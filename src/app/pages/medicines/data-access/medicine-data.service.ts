@@ -14,8 +14,8 @@ import {environment} from "../../../../environments/environment.prod";
 })
 export class MedicineDataService {
 
-  //private backendApi = environment.backendApiFromHost;
-  private backendApi = '10.0.2.2';
+  private backendApi = environment.backendApiFromHost;
+  //private backendApi = '10.0.2.2';
 
   private _baseUrl = `http://${this.backendApi}:5215/api/Medicine`;
   constructor(private _httpClient: HttpClient) {}
